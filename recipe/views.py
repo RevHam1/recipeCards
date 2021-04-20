@@ -25,7 +25,7 @@ def register(request):
             password = hashed_pw
         )
         request.session['user_id'] = user.id
-        return redirect('/recipe')
+        return redirect('/recipe_cards')
     return redirect('/')
 
 def login(request):
@@ -35,7 +35,7 @@ def login(request):
             user = user[0]      
             if bcrypt.checkpw(request.POST['password'].encode(), user.password.encode()):
                 request.session['user_id'] = user.id
-                return redirect('/recipe')
+                return redirect('/recipe_cards')
         messages.error(request, "Email or password is incorrect")
     return redirect('/')
     
@@ -51,7 +51,7 @@ def recipe(request):
         params = {
             'tags' : request.POST['search'],
             'apiKey': settings.SPOONACULAR_API_KEY,
-            'number' : 1,
+            'number' : 9,
         }
 
         r = requests.get(search_url, params=params)
@@ -76,7 +76,7 @@ def recipe(request):
         'current_user': User.objects.get(id=request.session['user_id']),
         'recipes': recipes,
     }
-    return render(request, "recipe.html", context)
+    return render(request, "recipe_cards.html", context)
 
 def logout(request):
     request.session.flush()
@@ -103,9 +103,30 @@ def save(request):
 def recipes_saved(request):
     context = {
         'current_user': User.objects.get(id=request.session['user_id']),
-        'all_cards': Card.objects.all,
+        'all_cards': Card.objects.order_by('-created_at'),
     }    
     return render(request, 'recipes_saved.html', context)
+
+def recipes_index(request):
+    context = {
+        'current_user': User.objects.get(id=request.session['user_id']),
+        'all_cards': Card.objects.order_by('title'),
+    }    
+    return render(request, 'recipes_index.html', context)
+
+def show_card(request, card_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
+    cards_with_id = Card.objects.filter(id=card_id)
+    if len(cards_with_id) == 0:
+        return redirect('/recipes_saved')
+    
+    context = {
+        'one_card': Card.objects.get(id=card_id),
+        'current_user': User.objects.get(id=request.session['user_id']),
+    }
+    return render(request, "recipe_card.html", context)
+
 
 def delete(request, card_id):
     if request.method == "GET":
@@ -119,4 +140,20 @@ def delete(request, card_id):
         card.delete()
         return redirect("/recipes_saved")
 
+def like_card(request, card_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
+    # if request.method == 'POST':
+    one_card = Card.objects.get(id=card_id)
+    current_user = User.objects.get(id=request.session['user_id'])
+    one_card.users_who_liked.add(current_user)
+    return redirect('/recipes_index')
 
+def unlike_card(request, card_id):
+    if 'user_id' not in request.session:
+        return redirect('/')
+
+    one_card = Card.objects.get(id=card_id)
+    current_user = User.objects.get(id=request.session['user_id'])
+    one_card.users_who_liked.remove(current_user)
+    return redirect('/recipes_index')

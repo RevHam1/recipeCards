@@ -54,20 +54,7 @@ class User(models.Model):
     objects = UserManager()
 
 
-## ************************* GroupManager & Group ****************************** ##
-# class GroupManager(models.Manager):
-#     def group_validator(self, postData):
-#         errors = {}
-
-#         if len(postData['name']) == 0:
-#             errors['name'] = "Name is required!"
-#         elif len(postData['name']) < 5:
-#             errors['name'] = "First name must be at least 5 charactors long!"
-#         if len(postData['description']) < 3:
-#             errors['description'] = "Description must be more than 10 characters!" 
-
-#         return errors
-
+## ************************* CardManager & Card ****************************** ##
 
 class Card(models.Model):
     title = models.CharField(max_length=255)
@@ -82,6 +69,3 @@ class Card(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
-
-#     objects = GroupManager()

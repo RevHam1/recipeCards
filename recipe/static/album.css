@@ -6,8 +6,8 @@
 }
 @media (min-width: 768px) {
   .jumbotron {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    /* padding-top: 6rem;
+    padding-bottom: 6rem; */
   }
 }
 
@@ -36,7 +36,7 @@ footer p {
   text-align: center;
   margin: 20px;
   align-items: center;
-  /* vertical-align: top; */
+  vertical-align: top;
 }
 
 .center_ready {
@@ -50,12 +50,23 @@ footer p {
 
 .directions {
   font-size: 16px;
-  margin-left: 20px;
+  margin: 50px;
+  width: 90%;
+}
+
+ol {
+  font-size: 16px;
+  margin-left: 50px;
 }
 
 .bottom {
   padding-bottom: 15px;
   border-bottom: 3px solid black;
+}
+
+.bottomT {
+  border-bottom: 3px dotted black;
+  width: 90%;
 }
 
 button {
@@ -81,10 +92,6 @@ button {
   margin-left: 20px;
 }
 
-/* body {
-  background-image: url('{% static "background_search_desktop.jpg" %}');
+.down {
+  margin-top: 20px;
 }
-
-section {
-  background-image: url('{% static "background_search_desktop.jpg" %}') !important;
-} */

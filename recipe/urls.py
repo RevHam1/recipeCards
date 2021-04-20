@@ -6,11 +6,16 @@ urlpatterns = [
     path('', views.index),
     path('register', views.register),
     path('login', views.login),
-    path('recipe/', views.recipe),
     path('logout', views.logout),
+    path('recipe_cards/', views.recipe),
 
-    ## FUTURE ROUTES BERLOW
+    ## APP specific Routes
     path('save', views.save),
     path('recipes_saved', views.recipes_saved),
-    path('delete/<int:card_id>', views.delete)
+    path('recipes_index', views.recipes_index),
+    path('recipe_card/<int:card_id>', views.show_card),
+    path('delete/<int:card_id>', views.delete),
+
+    path('recipe_card/like/<int:card_id>', views.like_card),
+    path('recipe_card/unlike/<int:card_id>', views.unlike_card),
 ]
