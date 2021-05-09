@@ -39,7 +39,7 @@ def login(request):
         messages.error(request, "Email or password is incorrect")
     return redirect('/')
     
-
+# How to pull from API https://www.youtube.com/watch?v=lc2KvFbbfAQ
 def recipe(request):
     if 'user_id' not in request.session:
         return redirect('/')
@@ -122,7 +122,7 @@ def show_card(request, card_id):
         return redirect('/recipes_saved')
     
     context = {
-        'one_card': Card.objects.get(id=card_id),
+        'card': Card.objects.get(id=card_id),
         'current_user': User.objects.get(id=request.session['user_id']),
     }
     return render(request, "recipe_card.html", context)
